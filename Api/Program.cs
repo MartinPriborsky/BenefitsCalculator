@@ -1,3 +1,5 @@
+using Api.Data;
+using Api.Repositories;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+// Add automapper DI
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddSwaggerGen(c =>
 {
     c.EnableAnnotations();
@@ -18,11 +22,24 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// Add Scoped Services and Repositories
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IDependentRepository, DependentRepository>();
+
+// Add DbContext
+builder.Services.AddDbContext<ApplicationDbContext>();
+
+// Ensure creation of In Memory DB
+using (var context = new ApplicationDbContext())
+{
+    context.Database.EnsureCreated();
+}
+
 var allowLocalhost = "allow localhost";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(allowLocalhost,
-        policy => { policy.WithOrigins("http://localhost:3000", "http://localhost"); });
+        policy => policy.WithOrigins("http://localhost:3000", "http://localhost"));
 });
 
 var app = builder.Build();

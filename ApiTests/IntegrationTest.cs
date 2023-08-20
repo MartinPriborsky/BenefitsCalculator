@@ -28,6 +28,7 @@ public class IntegrationTest : IDisposable
     public void Dispose()
     {
         HttpClient.Dispose();
+        // viz. CA1816
+        GC.SuppressFinalize(this);
     }
 }
-
