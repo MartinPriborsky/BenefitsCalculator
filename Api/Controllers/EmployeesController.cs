@@ -21,18 +21,31 @@ public class EmployeesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ApiResponse<GetEmployeeDto>>> Get(int id, CancellationToken cancellationToken)
     {
-        var employee = await _employeeRepository.GetEmployeeById(id, cancellationToken);
-
-        if (employee == null)
+        try
         {
-            return NotFound();
+            var employee = await _employeeRepository.GetEmployeeById(id, cancellationToken);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            return new ApiResponse<GetEmployeeDto>
+            {
+                Data = employee,
+                Success = true
+            };
         }
-
-        return new ApiResponse<GetEmployeeDto>
+        catch(Exception ex)
         {
-            Data = employee,
-            Success = true
-        };
+            return new ApiResponse<GetEmployeeDto>
+            {
+                Data = null,
+                Success = false,
+                Error = "Error while retrieving employee.",
+                Message = ex.Message
+            };
+        }
     }
 
     [SwaggerOperation(Summary = "Get all employees")]
@@ -42,12 +55,25 @@ public class EmployeesController : ControllerBase
         //task: use a more realistic production approach
         //solution: I will use an in-memory database to simulate the production database.
         //plus: I also added cancellationTokens, and repositories for accessing data.
-        var employees = await _employeeRepository.GetAllEmployees(cancellationToken);
-
-        return new ApiResponse<List<GetEmployeeDto>>
+        try
         {
-            Data = employees,
-            Success = true
-        };
+            var employees = await _employeeRepository.GetAllEmployees(cancellationToken);
+
+            return new ApiResponse<List<GetEmployeeDto>>
+            {
+                Data = employees,
+                Success = true
+            };
+        }
+        catch(Exception ex)
+        {
+            return new ApiResponse<List<GetEmployeeDto>>
+            {
+                Data = null,
+                Success = false,
+                Error = "Error while retrieving employees.",
+                Message = ex.Message
+            };
+        }
     }
 }

@@ -1,9 +1,8 @@
 ﻿using Api.Data;
 using Api.Dtos.Employee;
-using Api.Models;
+using Api.Extensions;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace Api.Repositories
 {
@@ -22,19 +21,25 @@ namespace Api.Repositories
 
         public async Task<List<GetEmployeeDto>> GetAllEmployees(CancellationToken cancellationToken)
         {
-            var empoyees = await _dbContext.Employees
+            var employees = await _dbContext.Employees
                 .Include(e => e.Dependents)
                 .ToListAsync(cancellationToken);
-            return _mapper.Map<List<GetEmployeeDto>>(empoyees);
+
+            employees.ForEach(e => e.ValidateDependents());
+
+            return _mapper.Map<List<GetEmployeeDto>>(employees);
         }
 
         public async Task<GetEmployeeDto> GetEmployeeById(int id, CancellationToken cancellationToken)
         {
-            var empoyee = await _dbContext.Employees
+            var employee = await _dbContext.Employees
                 .Include(e => e.Dependents)
                 .Where(e => e.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
-            return _mapper.Map<GetEmployeeDto>(empoyee);
+
+            employee?.ValidateDependents();
+
+            return _mapper.Map<GetEmployeeDto>(employee);
         }
     }
 }
