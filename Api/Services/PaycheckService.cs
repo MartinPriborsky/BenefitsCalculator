@@ -59,8 +59,8 @@ namespace Api.Services
             return paychecks;
         }
 
-        // Add one cent to last payments at the end of the year
-        // It seems better, then give them prematurely
+        // Add remainders cent by cent to the last paycheck(s) at the end of the year.
+        // why: To distribute them as evently as possible, at the same time not giving them prematurely
         private static decimal AddRemaindingCentToLatePaychecks(int paycheckId, int remainder)
         {
             return GlobalConstants.NUMBER_OF_PAYCHECKS_PER_YEAR - paycheckId < remainder ? 0.01m : 0.00m;

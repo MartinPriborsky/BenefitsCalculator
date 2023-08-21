@@ -39,9 +39,10 @@ public class EmployeesController : ControllerBase
     [HttpGet("")]
     public async Task<ActionResult<ApiResponse<List<GetEmployeeDto>>>> GetAll(CancellationToken cancellationToken)
     {
-        //task: use a more realistic production approach
-        //solution: I will use an in-memory database to simulate the production database.
-        //plus: I also added cancellationTokens, and repositories for accessing data.
+        // task: use a more realistic production approach
+        // solution: I will use an in-memory database to simulate the production database.
+        // why: Easy to run your code condition (no need to provide directions/secrets to real database)
+        // plus: I also added cancellationTokens, and repositories for accessing data.
         var employees = await _employeeRepository.GetAllEmployees(cancellationToken);
 
         return new ApiResponse<List<GetEmployeeDto>>

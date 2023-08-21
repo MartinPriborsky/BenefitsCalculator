@@ -1,6 +1,7 @@
 ﻿namespace Api
 {
-    // Define global constants to avoid using magic numbers
+    // Define global constants
+    // why: to avoid using magic numbers
     public static class GlobalConstants
     {
         public const decimal PROCENT_OF_REDUCTION_IF_OVER_80K = 0.02m; // employees that make more than $80,000 per year will incur an additional 2% of their yearly salary in benefits costs

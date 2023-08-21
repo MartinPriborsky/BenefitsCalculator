@@ -6,6 +6,7 @@ using AutoMapper;
 namespace Api
 {
     // AutoMapper profile class for defining mappings between entities and DTOs
+    // why: to avoid manual mapping
     public class MappingProfiles : Profile
     {
         public MappingProfiles()

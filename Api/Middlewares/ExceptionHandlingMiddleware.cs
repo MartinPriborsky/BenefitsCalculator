@@ -3,7 +3,8 @@ using Newtonsoft.Json;
 
 namespace Api.Middlewares
 {
-    // To unify the error handeling for all API endpoints I implement custom exception handling middleware
+    // Custom exception handling middleware
+    // why: To unify the error handeling for all API endpoints 
     public class ExceptionHandlingMiddleware
     {
         private readonly RequestDelegate _next;
