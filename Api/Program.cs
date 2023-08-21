@@ -1,8 +1,8 @@
 using Api.Data;
+using Api.Middlewares;
 using Api.Repositories;
 using Api.Services;
 using Microsoft.OpenApi.Models;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -53,6 +53,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Add middlewar for error response handling
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseCors(allowLocalhost);
 
