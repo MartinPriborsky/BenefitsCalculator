@@ -1,9 +1,10 @@
 ﻿using Api.Dtos.Employee;
+using Api.Dtos.Paychecks;
 
 namespace Api.Services
 {
     public interface IPaycheckCalculationService
     {
-        (decimal, int) CalculatePaycheck(GetEmployeeDto employee);
+        PaycheckCalculationResult CalculatePaycheck(GetEmployeeDto employee);
     }
 }

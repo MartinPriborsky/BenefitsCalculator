@@ -14,22 +14,22 @@ namespace Api.Services
             _paycheckCalculationService = paycheckCalculationService;
         }
 
-        public async Task<Paycheck> GetPaycheck(int employeeId, int paycheckId, CancellationToken cancellationToken)
+        public async Task<Paycheck?> GetPaycheck(int employeeId, int paycheckId, CancellationToken cancellationToken)
         {
             var employee = await _employeeRepository.GetEmployeeById(employeeId, cancellationToken);
             if (employee == null)
             {
-                return new Paycheck();
+                return null;
             }
 
-            (decimal pay, int remainder) = _paycheckCalculationService.CalculatePaycheck(employee);
+            var calculationResult = _paycheckCalculationService.CalculatePaycheck(employee);
 
             return new Paycheck
             {
                 PaycheckId = paycheckId,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
-                Pay = pay + AddRemaindingCentToLatePaychecks(paycheckId, remainder)
+                Pay = calculationResult.Pay + AddRemaindingCentToLatePaychecks(paycheckId, calculationResult.Remainder)
             };
         }
 
@@ -41,7 +41,7 @@ namespace Api.Services
                 return new List<Paycheck>();
             }
 
-            (decimal pay, int remainder) = _paycheckCalculationService.CalculatePaycheck(employee);
+            var calculationResult = _paycheckCalculationService.CalculatePaycheck(employee);
 
             List<Paycheck> paychecks = new();
 
@@ -52,7 +52,7 @@ namespace Api.Services
                     PaycheckId = paycheckId,
                     FirstName = employee.FirstName,
                     LastName = employee.LastName,
-                    Pay = pay + AddRemaindingCentToLatePaychecks(paycheckId, remainder)
+                    Pay = calculationResult.Pay + AddRemaindingCentToLatePaychecks(paycheckId, calculationResult.Remainder)
                 });
             }
 

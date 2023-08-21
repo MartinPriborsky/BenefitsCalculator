@@ -53,9 +53,16 @@ public class PaycheckIntegrationTests : IntegrationTest
     }
 
     [Fact]
-    public async Task WhenAskedForANonexistentPaycheck_ShouldReturn404()
+    public async Task WhenAskedForANonexistentPaychecks_ShouldReturn404()
     {
         var response = await HttpClient.GetAsync($"/api/v1/paychecks/{10}");
+        await response.ShouldReturn(HttpStatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task WhenAskedForANonexistentPaycheck_ShouldReturn404()
+    {
+        var response = await HttpClient.GetAsync($"/api/v1/paychecks/{10}/{10}");
         await response.ShouldReturn(HttpStatusCode.NotFound);
     }
 }

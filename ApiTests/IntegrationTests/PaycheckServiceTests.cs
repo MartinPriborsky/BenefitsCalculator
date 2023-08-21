@@ -6,6 +6,7 @@ using Xunit;
 
 namespace ApiTests.IntegrationTests
 {
+    // Testing a few use cases on correct calculation
     public class PaycheckCalculationServiceTests
     {
         [Fact]
@@ -20,7 +21,8 @@ namespace ApiTests.IntegrationTests
             };
 
             var result = service.CalculatePaycheck(employee);
-            Assert.Equal((1000m, 0), result);
+            Assert.Equal(1000m, result.Pay);
+            Assert.Equal(0, result.Remainder);
         }
 
         [Fact]
@@ -35,7 +37,8 @@ namespace ApiTests.IntegrationTests
             };
 
             var result = service.CalculatePaycheck(employee);
-            Assert.Equal((2629.23m, 2), result);
+            Assert.Equal(2629.23m, result.Pay);
+            Assert.Equal(2, result.Remainder);
         }
 
         [Fact]
@@ -57,7 +60,8 @@ namespace ApiTests.IntegrationTests
             };
 
             var result = service.CalculatePaycheck(employee);
-            Assert.Equal((630.76m, 24), result);
+            Assert.Equal(630.76m, result.Pay);
+            Assert.Equal(24, result.Remainder);
         }
 
         [Fact]
@@ -84,7 +88,8 @@ namespace ApiTests.IntegrationTests
             };
 
             var result = service.CalculatePaycheck(employee);
-            Assert.Equal((630.76m, 24), result);
+            Assert.Equal(630.76m, result.Pay);
+            Assert.Equal(24, result.Remainder);
         }
 
         [Fact]
@@ -117,7 +122,8 @@ namespace ApiTests.IntegrationTests
             };
 
             var result = service.CalculatePaycheck(employee);
-            Assert.Equal((76.92m, 8), result);
+            Assert.Equal(76.92m, result.Pay);
+            Assert.Equal(8, result.Remainder);
         }
     }
 }

@@ -38,6 +38,11 @@ public class PaychecksController : ControllerBase
     [HttpGet("{employeeId}/{paycheckId}")]
     public async Task<ActionResult<ApiResponse<Paycheck>>> Get(int employeeId, int paycheckId, CancellationToken cancellationToken)
     {
+        if (paycheckId < 1 || paycheckId > 26)
+        {
+            throw new Exception("Invalid paycheckId. It should be between 1 and 26.");
+        }
+
         var paycheck = await _paycheckService.GetPaycheck(employeeId, paycheckId, cancellationToken);
 
         if (paycheck == null)

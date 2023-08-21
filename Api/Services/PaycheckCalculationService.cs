@@ -1,12 +1,13 @@
 ﻿using Api.Dtos.Dependent;
 using Api.Dtos.Employee;
+using Api.Dtos.Paychecks;
 using Api.Models;
 
 namespace Api.Services
 {
     public class PaycheckCalculationService : IPaycheckCalculationService
     {
-        public (decimal, int) CalculatePaycheck(GetEmployeeDto employee)
+        public PaycheckCalculationResult CalculatePaycheck(GetEmployeeDto employee)
         {
             // Calculate the cost of benefits
             decimal baseCost = GetBaseCost();
@@ -26,7 +27,11 @@ namespace Api.Services
             int remainder = (int)((yearlySalaryAfterBenefits - (biWeeklyPay * GlobalConstants.NUMBER_OF_PAYCHECKS_PER_YEAR)) * 100);
 
             // Return the calculated bi-weekly pay and remainder in cents
-            return (biWeeklyPay, remainder);
+            return new PaycheckCalculationResult 
+            {
+                Pay = biWeeklyPay,
+                Remainder = remainder
+            };
         }
 
         private static decimal GetBaseCost()
