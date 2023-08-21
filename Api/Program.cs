@@ -1,5 +1,6 @@
 using Api.Data;
 using Api.Repositories;
+using Api.Services;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // Add Scoped Services and Repositories
+builder.Services.AddScoped<IPaycheckService, PaycheckService>();
+builder.Services.AddScoped<IPaycheckCalculationService, PaycheckCalculationService>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IDependentRepository, DependentRepository>();
 
